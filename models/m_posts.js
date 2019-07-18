@@ -46,9 +46,9 @@ class Posts {
     }
   }
 
-  static async updateEntry(id, column, content) {
-    console.log("for fun", content, column)
-    const query = `UPDATE posts SET ${column} = '${content}' WHERE id = '${id}'`;
+  static async updateEntry(title, author_id, content, id) {
+    console.log("for fun", content, title, author_id)
+    const query = `UPDATE posts SET (title, author_id, content) = ('${title}', '${author_id}', '${content}') WHERE id = '${id}'`;
 
     try {
       let response = await db.result(query);

@@ -33,11 +33,11 @@ router.get("/delete/:post_id?", async (req, res, next) => {
 });
 
 // add a post
-router.post("/add_post", async (req, res) => {
+router.post("/post/add_post", async (req, res) => {
   const { title, author_id, content } = req.body;
   console.log("req.body", req.body)
   const response = await PostModel.addEntry(title, author_id, content);
-  if (response.command === "INSERT" && response.rowCount >= 0) {
+  if (response.command === 'INSERT' && response.rowCount >= 0) {
     res.sendStatus(200);
   } else {
     res.send(`Could not add new blog post ${title}`).status(409);
@@ -46,9 +46,11 @@ router.post("/add_post", async (req, res) => {
 
 // update a post
 router.put("/update/:post_id?", async (req, res, next) => {
-  const content = req.body.content;
   const postId = req.params.post_id;
-  const response = await PostModel.updateEntry(postId, "content", content);
+  const content = req.body.content;
+  const title = req.body.title;
+  const author_id = req.body.author_id;
+  const response = await PostModel.updateEntry(title, author_id, content, postId);
   console.log("update response: ", response)
   if (response.command === "UPDATE" && response.rowCount >= 1) {
     res.sendStatus(200);
